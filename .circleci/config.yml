@@ -1,16 +1,11 @@
 version: 2.1
 executors:
-  my-custom-executor:
+  my-docker-image:
     docker:
       - image: cimg/base:stable
-        auth:
-          # ensure you have first added these secrets
-          # visit app.circleci.com/settings/project/github/kaiocesar/recipe-app-api/environment-variables
-          username: $DOCKER_HUB_USER
-          password: $DOCKER_HUB_PASSWORD
 jobs:
-  my-job-name:
-    executor: my-custom-executor
+  test:
+    executor: my-docker-image
     steps:
       - checkout
       - run: |
@@ -18,4 +13,4 @@ jobs:
 workflows:
   my-custom-workflow:
     jobs:
-      - my-job-name
+      - test
