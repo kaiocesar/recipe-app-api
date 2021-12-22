@@ -1,9 +1,21 @@
-language: python
-python:
-  - "3.6"
-services:
-  - docker
-before_script: pip install docker-compose
-
-script:
-  - docker-compose run app sh -c "python manage.py test && flake8"
+version: 2.1
+executors:
+  my-custom-executor:
+    docker:
+      - image: cimg/base:stable
+        auth:
+          # ensure you have first added these secrets
+          # visit app.circleci.com/settings/project/github/kaiocesar/recipe-app-api/environment-variables
+          username: $DOCKER_HUB_USER
+          password: $DOCKER_HUB_PASSWORD
+jobs:
+  my-job-name:
+    executor: my-custom-executor
+    steps:
+      - checkout
+      - run: |
+          pip install docker-compose
+workflows:
+  my-custom-workflow:
+    jobs:
+      - my-job-name
